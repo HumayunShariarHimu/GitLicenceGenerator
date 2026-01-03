@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Licence Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: -apple-system, sans-serif; }
+        .glass-card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; }
+        .input-style { background: #0d1117; border: 1px solid #30363d; color: white; transition: 0.3s; }
+        .input-style:focus { border-color: #58a6ff; outline: none; box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2); }
+        .license-box { background: #010409; border: 1px solid #30363d; font-family: 'SFMono-Regular', Consolas, monospace; }
+    </style>
+</head>
+<body class="min-h-screen py-10 px-4">
+
+    <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-white mb-2 underline decoration-blue-500 underline-offset-8">Git Licence Generator</h1>
+            <p class="text-gray-400 mt-4">Generate advanced proprietary licenses for your GitHub repositories.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            
+            <div class="lg:col-span-2 space-y-6">
+                <div class="glass-card p-6">
+                    <h2 class="text-sm font-bold text-blue-400 uppercase tracking-widest mb-4"><i class="fas fa-cog mr-2"></i>Repo Details</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Author Name</label>
+                            <input type="text" id="author" value="Humayun Shariar Himu" class="w-full p-2.5 rounded-md input-style" oninput="updateLicense()">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Repository Name</label>
+                            <input type="text" id="repoName" placeholder="e.g. My-Awesome-App" class="w-full p-2.5 rounded-md input-style" oninput="updateLicense()">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Year</label>
+                                <input type="number" id="year" value="2026" class="w-full p-2.5 rounded-md input-style" oninput="updateLicense()">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-gray-400 mb-1">Version</label>
+                                <input type="text" id="version" value="v1.0.0" class="w-full p-2.5 rounded-md input-style" oninput="updateLicense()">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">Project Type</label>
+                            <select id="type" class="w-full p-2.5 rounded-md input-style" onchange="updateLicense()">
+                                <option value="Software">Software Application</option>
+                                <option value="API">API Engine</option>
+                                <option value="Library">Library/Framework</option>
+                                <option value="Database">Database System</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 text-center border-dashed border-blue-900">
+                    <p class="text-xs text-gray-500">Created & Maintained by</p>
+                    <p class="text-md font-bold text-white">Humayun Shariar Himu</p>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3">
+                <div class="glass-card p-6 h-full flex flex-col">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-sm font-bold text-green-400 uppercase tracking-widest"><i class="fas fa-eye mr-2"></i>Live Preview</h2>
+                        <button onclick="copyCode()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-2 rounded-full font-bold transition flex items-center gap-2">
+                            <i class="far fa-copy"></i> <span id="btnText">Copy License</span>
+                        </button>
+                    </div>
+                    
+                    <div id="output" class="license-box flex-grow p-5 rounded-lg text-xs sm:text-sm leading-relaxed overflow-y-auto max-h-[500px] text-gray-300">
+                        </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function updateLicense() {
+            const author = document.getElementById('author').value || "Humayun Shariar Himu";
+            const repo = document.getElementById('repoName').value || "Untitled-Repo";
+            const year = document.getElementById('year').value || "2026";
+            const version = document.getElementById('version').value || "1.0.0";
+            const type = document.getElementById('type').value;
+
+            const text = `PROPRIETARY LICENSE - ${repo.toUpperCase()}
+-----------------------------------------------------------
+Copyright (c) ${year} ${author}
+Version: ${version}
+Project Type: ${type}
+
+All rights reserved. This ${type} is the exclusive property of ${author}.
+
+NO PERMISSION:
+Permission is NOT granted to any person or entity to:
+1. Copy, redistribute, or use the source code of "${repo}".
+2. Modify, decompile, or create derivative works of this ${type}.
+3. Use the ${type} for commercial purposes without a private contract.
+
+TRADEMARK & OWNERSHIP:
+The name "${repo}" and all associated assets are trademarks of ${author}. 
+Unauthorized use is strictly prohibited.
+
+WARRANTY:
+THE ${type.toUpperCase()} IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. 
+IN NO EVENT SHALL ${author.toUpperCase()} BE LIABLE FOR ANY CLAIM OR DAMAGES.
+
+Contact for Permissions: [Your Email/Contact Info Here]
+-----------------------------------------------------------
+Generated by Himu License Tool`;
+
+            document.getElementById('output').innerText = text;
+        }
+
+        async function copyCode() {
+            const content = document.getElementById('output').innerText;
+            const btnText = document.getElementById('btnText');
+            try {
+                await navigator.clipboard.writeText(content);
+                btnText.innerText = "COPIED!";
+                setTimeout(() => btnText.innerText = "Copy License", 2000);
+            } catch (err) {
+                alert("Failed to copy!");
+            }
+        }
+
+        // Init
+        window.onload = updateLicense;
+    </script>
+</body>
+</html>
